@@ -34,15 +34,3 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
 end
-
-
-params = ActionController::Parameters.new({
-    email: "somedudeman@dude.man",
-    password: "jobobdsman",
-    password_confirmation: "jobobdsman",
-    registration: {
-        email: "somedudeman@dude.man",
-        password: "jobobdsman",
-        password_confirmation: "jobobdsman",
-    }
-                                          })
