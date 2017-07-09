@@ -5,12 +5,10 @@ class AuthenticationsController < ApplicationController
   def auth
 
     goodFields = [:user_id, :session_token]
-
     puts params
     ActionController::Parameters.action_on_unpermitted_parameters = :raise
     begin
-      params.permit(goodFields)
-      params.require(goodFields)
+      params.require(:authentication).permit(goodFields)
     rescue ActionController::ParameterMissing
       return render :json => {:reason => "missing JSON field"}, :status => 422
     rescue ActionController::UnpermittedParameters
