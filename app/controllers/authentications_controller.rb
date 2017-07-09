@@ -32,12 +32,6 @@ class AuthenticationsController < ApplicationController
 
   end
 
-  def randomToken
-    o = [('a'..'z'), ('A'..'Z')].map(&:to_a).flatten
-    token = (0...31).map {o[rand(o.length)]}.join
-    return token
-  end
-
   def sessionValid?()
     token = params[:session_token]
     user_id = params[:user_id]
