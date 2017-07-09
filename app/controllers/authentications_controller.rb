@@ -1,5 +1,5 @@
 class AuthenticationsController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:create, :update, :request1] #for dev only, disables authenticity checking on create/update
+  skip_before_action :verify_authenticity_token, only: [:create, :update, :auth] #for dev only, disables authenticity checking on create/update
 
   def thoushaltnotbenamed
 
@@ -28,7 +28,7 @@ class AuthenticationsController < ApplicationController
     end
   end
 
-  def request1
+  def auth
 
     goodFields = [:user_id, :session_token]
 
