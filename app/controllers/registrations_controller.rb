@@ -1,28 +1,27 @@
 class RegistrationsController < Devise::RegistrationsController
   skip_before_action :verify_authenticity_token, only: [:create, :update] #for dev only, disables authenticity checking on create/update
 
-
+  # POST /users
   def create
+    puts params
+    params.require(:registration).permit([:email, :password, :password_confirmation])
 
     input_email = params[:email]
     input_password = params[:password]
     confirm_password = params[:password_confirmation]
 
-    newUser = User.new(email:input_email, password:input_password, password_confirmation:confirm_password)
+    newUser = User.new(email: input_email, password: input_password, password_confirmation: confirm_password, session_token: randomToken)
 
     #Successful Registration
     if newUser.save
       #Generate a token, then send it back.
-      newUser.update(session_token:randomToken)
-
       payload = {
-          user_id:newUser.id,
-          token:newUser.session_token
+          user_id: newUser.id,
+          token: newUser.session_token
       }
-
       render :json => payload, :status => 200
     else
-      return render :json => {:reason => "Unable to create user"}, :status => 409
+      render :json => {:reason => "Unable to create user"}, :status => 409
     end
 
   end
@@ -35,3 +34,15 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
 end
+
+
+params = ActionController::Parameters.new({
+    email: "somedudeman@dude.man",
+    password: "jobobdsman",
+    password_confirmation: "jobobdsman",
+    registration: {
+        email: "somedudeman@dude.man",
+        password: "jobobdsman",
+        password_confirmation: "jobobdsman",
+    }
+                                          })

@@ -3,31 +3,12 @@ class AuthenticationsController < ApplicationController
 
   #POST /authentication
   def auth
-
-    goodFields = [:user_id, :session_token]
-    puts params
-    ActionController::Parameters.action_on_unpermitted_parameters = :raise
-    begin
-      params.require(:authentication).permit(goodFields)
-    rescue ActionController::ParameterMissing
-      return render :json => {:reason => "missing JSON field"}, :status => 422
-    rescue ActionController::UnpermittedParameters
-      return render :json => {:reason => "extraneous JSON fields"}, :status => 422
-    end
-
+    params.require(:authentication).permit([:user_id, :session_token])
     if sessionValid?
-      # render something
-      payload = {
-          authenticated: true
-      }
-      render :json => payload, :status => 200
+      render head :ok
     else
-      payload = {
-          error: "Invalid authentication credentials"   }
-    puts "====================================================="
-      render :json => payload, :status => :bad_request
+      render :json => { error: "Invalid authentication credentials"}, :status => :bad_request
     end
-
   end
 
   def sessionValid?()
