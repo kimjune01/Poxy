@@ -1,33 +1,7 @@
 class AuthenticationsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create, :update, :auth] #for dev only, disables authenticity checking on create/update
 
-  def thoushaltnotbenamed
-
-    goodFields = [:user_id, :session_token]
-    begin
-      params.require(goodFields)
-    rescue
-      render :nothing => true, :status => 422
-    end
-    isPermitted = params.permit(goodFields).permitted?
-
-    if !isPermitted
-      render :json => {:reason => "bad params"}, :status => 422
-    end
-    if sessionValid?
-      # render something
-      payload = {
-          authenticated: true
-      }
-      render :json => payload, :status => 200
-    else
-      payload = {
-          error: "No such user; check the submitted email address",
-      }
-      render :json => payload, :status => :bad_request
-    end
-  end
-
+  #POST /authentication
   def auth
 
     goodFields = [:user_id, :session_token]
