@@ -7,11 +7,11 @@ class AuthenticationsController < ApplicationController
     if sessionValid?
       head :ok
     else
-      render :json => { error: "Invalid authentication credentials"}, :status => :bad_request
+      render :json => {error: "Invalid authentication credentials"}, :status => :bad_request
     end
   end
 
-  def sessionValid?()
+  def sessionValid?
     token = params[:session_token]
     user_id = params[:user_id]
     user = User.find_by_id(user_id)
