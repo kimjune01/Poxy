@@ -5,7 +5,7 @@ class AuthenticationsController < ApplicationController
   def auth
     params.require(:authentication).permit([:user_id, :session_token])
     if sessionValid?
-      head :ok
+      render :json => {"result": "success"}, :status => :ok
     else
       render :json => {error: "Invalid authentication credentials"}, :status => :bad_request
     end
