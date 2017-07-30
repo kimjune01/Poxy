@@ -4,10 +4,10 @@ Rails.application.routes.draw do
 
   post '/authenticate', to: 'authentications#auth'
   post '/signup',       to: 'signup#signup'
-
+  #post '/login', 		to: 'sesh#create'
   devise_scope :user do
-    post '/login', to: 'devise/sessions#create'
-    get '/login',  to: 'devise/sessions#new'
+    post '/login', to: 'sesh#create'
+    get '/login',  to: 'sesh#new'
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
