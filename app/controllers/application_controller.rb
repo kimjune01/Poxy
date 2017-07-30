@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  protect_from_forgery with: :null_session, only: Proc.new { |c| c.request.format.json? }
   rescue_from ActionController::ParameterMissing, :with => :missing_params
   rescue_from ActionController::UnpermittedParameters, :with => :unpermitted_params
 
