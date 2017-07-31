@@ -16,6 +16,9 @@ class SeshController < Devise::SessionsController
     puts "YOU MUST CONSTRUCT MORE PYLONS"
 
     if user.valid_password?(input_password)
+
+      user.session_token = randomToken
+      user.save
       payload = {
           user_id: user.id,
           token: user.session_token
@@ -27,6 +30,13 @@ class SeshController < Devise::SessionsController
 
 
   end
+
+  def randomToken
+    o = [('a'..'z'), ('A'..'Z')].map(&:to_a).flatten
+    token = (0...31).map {o[rand(o.length)]}.join
+    return token
+  end
+
 
 
 
