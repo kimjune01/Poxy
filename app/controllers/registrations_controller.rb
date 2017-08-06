@@ -17,7 +17,7 @@ class RegistrationsController < Devise::RegistrationsController
       #Generate a token, then send it back.
       payload = {
           user_id: newUser.id,
-          token: newUser.session_token
+          session_token: newUser.session_token
       }
       render :json => payload, :status => 200
     else
