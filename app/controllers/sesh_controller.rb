@@ -12,7 +12,7 @@ class SeshController < Devise::SessionsController
     if user && user.valid_password?(password)
       user.session_token = randomToken
       user.save
-      render :json => {user_id:user.id, token:user.session_token}, :status => 200
+      render :json => {user_id:user.id, session_token:user.session_token}, :status => 200
     else
       render :json => {:reason => "Invalid credentials"}, :status => 409
     end
