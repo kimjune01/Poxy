@@ -20,5 +20,5 @@ class AuthenticationsController < ApplicationController
     end
     return false
   end
-
+  
 end

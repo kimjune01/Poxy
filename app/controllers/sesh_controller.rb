@@ -9,7 +9,7 @@ class SeshController < Devise::SessionsController
   end
 
   def issueBadgeIfValid(user, password)
-    if user.valid_password?(password)
+    if user && user.valid_password?(password)
       user.session_token = randomToken
       user.save
       render :json => {user_id:user.id, token:user.session_token}, :status => 200
