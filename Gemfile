@@ -60,3 +60,6 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'rspec-rails', '~> 3.5'
 end
+
+gem 'google_places'
+gem 'open-weather'

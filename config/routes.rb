@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'parks/nearby'
+
   devise_for :users, controllers: { registrations: "registrations" }
 
 
