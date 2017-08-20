@@ -14,22 +14,32 @@ class ParksController < ApplicationController
 
   def get_parkList(lat, lon)
     parksOptions = get_parks(lat, lon)
-    weatherConditions = get_weather(lat, lon)
+    weatherResult = get_weather(lat, lon)
 
-    if isWeatherGood?(weatherConditions)
-      return parkListItems(parksOptions)
+    return filter_parks_by_weather(parksOptions, weatherResult) #weather not good, so return nothing
+  end
+
+  def filter_parks_by_weather(parksOptions, weatherResult)
+    if isWeatherGood?(weatherResult["weather"])
+      # binding.pry
+      return format_parkListItems(parksOptions)
     end
 
-    return [] #weather not good, so return nothing
+    return []
   end
 
   def isWeatherGood?(weatherConditions)
-    weatherConditions['weather'].each do |info|
-      if (800..802).member?(info['id']) || (951..953).member?(info['id'])
+    # http://openweathermap.org/weather-conditions
+    weatherConditions.each do |weatherStatus|
+      if isGoodCondition?(weatherStatus['id'])
         return true
       end
     end
     return false
+  end
+
+  def isGoodCondition?(condition)
+    return (800..802).member?(condition) || (951..953).member?(condition)
   end
 
   def format_parkListItems(unformatted_parks)
