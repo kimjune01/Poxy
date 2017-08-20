@@ -2,12 +2,6 @@ require 'rails_helper'
 
 RSpec.describe ParksController, type: :controller do
 
-  describe "GET #nearby" do
-    it "returns http success" do
-      get :nearby
-      expect(response).to have_http_status(:success)
-    end
-  end
 
   describe ParksController do
     it "weather should be good if sunny" do
@@ -25,7 +19,7 @@ RSpec.describe ParksController, type: :controller do
       weatherConditions = {"weather" => [{"id" => 800, "main" => "Clear", "description" => "clear sky", "icon" => "01d"}]}
       parksList = controller.filter_parks_by_weather(parkOptions, weatherConditions)
 
-      expect(parksList.size).to be > 0
+      expect(parksList.size).to be 1
 
     end
 
