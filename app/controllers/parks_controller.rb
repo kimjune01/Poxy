@@ -4,16 +4,13 @@ class ParksController < ApplicationController
   WEATHER_API_KEY = 'c9cf5712b2bc1e8c386dc830a39522b1'
 
   def nearby
-
-    new_params = params.permit([:latitude, :longitude])
-    lat = new_params[:latitude]
-    lon = new_params[:longitude]
+    lat = params[:latitude]
+    lon = params[:longitude]
     if (!lat || !lon)
-
       render :json => {error: "Invalid coordinates"}, :status => :bad_request
     else
       result = get_parkList(lat, lon)
-      render json: result, :status => :ok
+      render json: result
     end
   end
 
