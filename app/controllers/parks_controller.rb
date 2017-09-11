@@ -77,16 +77,18 @@ class ParksController < ApplicationController
 
   def get_parks(latitude, longitude)
     @client = GooglePlaces::Client.new(PLACES_API_KEY)
-    @client.spots(latitude, longitude, :types => 'park')
-
+    parks = @client.spots(latitude, longitude, :types => 'park')
+    puts(parks.length.to_s + " parks nearby")
+    return parks
   end
 
   def get_weather(latitude, longitude)
     require 'open_weather'
     options = {units: "metric", APPID: WEATHER_API_KEY}
     # binding.pry
-    OpenWeather::Current.geocode(latitude, longitude, options)
-
+    weather = OpenWeather::Current.geocode(latitude, longitude, options)
+    puts("Weather is " + weather["weather"].to_s)
+    return weather
   end
 end
 
