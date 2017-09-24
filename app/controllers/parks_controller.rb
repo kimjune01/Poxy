@@ -93,6 +93,14 @@ class ParksController < ApplicationController
     puts("Weather is " + weather["weather"].to_s)
     return weather
   end
+
+  def getImageURL(photoref)
+    BLANKPHOTOREQUEST = 'https://maps.googleapis.com/maps/api/place/photo?'
+    dimensions= 'maxwidth=1280&maxheight=1920'
+    url = BLANKPHOTOREQUEST + dimensions + photoref + PLACES_API_KEY
+
+    return url
+  end
 end
 
 # make a parkListItem struct
