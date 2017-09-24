@@ -69,7 +69,7 @@ class ParksController < ApplicationController
           unformatted_park.id,
           unformatted_park.lat,
           unformatted_park.lng,
-          photo_ref
+          getImageURL(photo_ref[0])
       )
     end
 
