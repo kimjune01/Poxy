@@ -1,7 +1,8 @@
 class ParksController < ApplicationController
-  Park = Struct.new(:picture_url, :name, :id, :latitude, :longitude, :photo_references)
+  Park = Struct.new(:picture_url, :name, :id, :latitude, :longitude)
   PLACES_API_KEY = 'AIzaSyC5Qklw5Cwn2LGmoyzbhRFUA2gX7WZHMHo'
   WEATHER_API_KEY = 'c9cf5712b2bc1e8c386dc830a39522b1'
+  BLANK_PHOTO_REQUEST = 'https://maps.googleapis.com/maps/api/place/photo?'
 
   def nearby
     lat = params[:latitude]
@@ -55,22 +56,21 @@ class ParksController < ApplicationController
     # }
     # ]
     parks = unformatted_parks
-    photo_ref = parks.map do |park|
+    photo_references = parks.map do |park|
       park.photos.map do |photo|
         photo.photo_reference
       end
     end
 
-    formatted = unformatted_parks.map do |unformatted_park|
+    formatted = unformatted_parks.zip(photo_references).map do |unformatted_park, photo_ref|
 
       Park.new(
-          unformatted_park.icon,
+          getImageURL(photo_ref[0]),
           unformatted_park.name,
           unformatted_park.id,
           unformatted_park.lat,
-          unformatted_park.lng,
-          getImageURL(photo_ref[0])
-      )
+          unformatted_park.lng
+          )
     end
 
     puts formatted
@@ -95,9 +95,12 @@ class ParksController < ApplicationController
   end
 
   def getImageURL(photoref)
-    BLANKPHOTOREQUEST = 'https://maps.googleapis.com/maps/api/place/photo?'
+
     dimensions= 'maxwidth=1280&maxheight=1920'
-    url = BLANKPHOTOREQUEST + dimensions + photoref + PLACES_API_KEY
+    url = ""
+    if !photoref.nil?
+      url = BLANK_PHOTO_REQUEST + dimensions + "&photoreference="+ photoref + "&key=" + PLACES_API_KEY
+    end
 
     return url
   end
