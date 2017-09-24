@@ -24,8 +24,7 @@ class ParksController < ApplicationController
 
   def filter_parks_by_weather(parksOptions, weatherResult)
     if isWeatherGood?(weatherResult["weather"])
-      # binding.pry
-      return format_parkListItems(parksOptions)
+      return format_park_list(parksOptions)
     end
 
     return []
@@ -45,7 +44,7 @@ class ParksController < ApplicationController
     return (800..804).member?(condition) || (951..953).member?(condition)
   end
 
-  def format_parkListItems(raw_parks)
+  def format_park_list(raw_parks)
     # render array of rendered parkListItems
     # [
     # {
@@ -88,7 +87,6 @@ class ParksController < ApplicationController
   def get_weather(latitude, longitude)
     require 'open_weather'
     options = {units: "metric", APPID: WEATHER_API_KEY}
-    # binding.pry
     weather = OpenWeather::Current.geocode(latitude, longitude, options)
     puts("Weather is " + weather["weather"].to_s)
     return weather
