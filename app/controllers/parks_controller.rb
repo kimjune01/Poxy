@@ -45,7 +45,7 @@ class ParksController < ApplicationController
     return (800..804).member?(condition) || (951..953).member?(condition)
   end
 
-  def format_parkListItems(unformatted_parks)
+  def format_parkListItems(raw_parks)
     # render array of rendered parkListItems
     # [
     # {
@@ -55,26 +55,26 @@ class ParksController < ApplicationController
     #     longitude: 120.1
     # }
     # ]
-    parks = unformatted_parks
-    photo_references = parks.map do |park|
-      park.photos.map do |photo|
-        photo.photo_reference
+
+    # photo ref needs to call Google to get its url.
+    photo_references = raw_parks.map do |each_park|
+      each_park.photos.map do |each_photo|
+        each_photo.photo_reference
       end
     end
 
-    formatted = unformatted_parks.zip(photo_references).map do |unformatted_park, photo_ref|
+    park_photo_zip = raw_parks.zip(photo_references)
 
+    return park_photo_zip.map do |each_raw_park, each_photo_ref|
       Park.new(
-          getImageURL(photo_ref[0]),
-          unformatted_park.name,
-          unformatted_park.id,
-          unformatted_park.lat,
-          unformatted_park.lng
+        # each photo ref may have many URLs associated with it
+          getImageURL(each_photo_ref[0]),
+          each_raw_park.name,
+          each_raw_park.id,
+          each_raw_park.lat,
+          each_raw_park.lng
           )
     end
-
-    puts formatted
-    return formatted
 
   end
 
@@ -95,7 +95,6 @@ class ParksController < ApplicationController
   end
 
   def getImageURL(photoref)
-
     dimensions= 'maxwidth=1280&maxheight=1920'
     url = ""
     if !photoref.nil?
