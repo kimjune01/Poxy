@@ -1,5 +1,5 @@
 class ParksController < ApplicationController
-  Park = Struct.new(:picture_url, :name, :latitude, :longitude)
+  Park = Struct.new(:picture_url, :name, :id, :latitude, :longitude, :photo_references)
   PLACES_API_KEY = 'AIzaSyC5Qklw5Cwn2LGmoyzbhRFUA2gX7WZHMHo'
   WEATHER_API_KEY = 'c9cf5712b2bc1e8c386dc830a39522b1'
 
@@ -41,7 +41,7 @@ class ParksController < ApplicationController
   end
 
   def isGoodCondition?(condition)
-    return (800..802).member?(condition) || (951..953).member?(condition)
+    return (800..804).member?(condition) || (951..953).member?(condition)
   end
 
   def format_parkListItems(unformatted_parks)
@@ -54,23 +54,26 @@ class ParksController < ApplicationController
     #     longitude: 120.1
     # }
     # ]
+    parks = unformatted_parks
+    photo_ref = parks.map do |park|
+      park.photos.map do |photo|
+        photo.photo_reference
+      end
+    end
 
     formatted = unformatted_parks.map do |unformatted_park|
+
       Park.new(
           unformatted_park.icon,
           unformatted_park.name,
+          unformatted_park.id,
           unformatted_park.lat,
-          unformatted_park.lng
+          unformatted_park.lng,
+          photo_ref
       )
     end
 
-    # Park.new(
-    #     picture_url: unformatted_park.icon,
-    #     name: unformatted_park.name,
-    #     latitude: unformatted_park.lat,
-    #     longitude: unformatted_park.lng
-    # )
-
+    puts formatted
     return formatted
 
   end
