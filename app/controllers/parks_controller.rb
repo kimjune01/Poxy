@@ -30,7 +30,7 @@ class ParksController < ApplicationController
   end
 
   def isWeatherGood?(weatherResult)
-      return isGoodCondition?(weatherConditions["weather"][0]['id'])
+      return isGoodCondition?(weatherResult["weather"][0]['id'])
   end
 
   # http://openweathermap.org/weather-conditions
