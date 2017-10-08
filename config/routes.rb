@@ -12,6 +12,6 @@ Rails.application.routes.draw do
     get '/login',  to: 'sesh#new'
   end
 
-  get "/eula" => "pages#show"
+  get "/eula" => "static#show"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
